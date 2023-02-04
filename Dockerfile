@@ -27,6 +27,6 @@ RUN yum install -y sqlite-devel
 
 RUN cd /opt/php-${PHP_VERSION} && \
     ./buildconf --force && \
-    ./configure --prefix=$HOME/php-8-bin/ --with-config-file-path=/opt/ini --with-openssl=/opt/ssl --with-curl --with-zlib
+    ./configure --prefix=$HOME/php-8-bin/ --with-config-file-path=/opt/ini --with-openssl=/opt/ssl --with-curl --with-zlib \
+    make install
 
-RUN make install       
