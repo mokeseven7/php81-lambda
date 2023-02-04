@@ -8,15 +8,6 @@ if [ ! -f php-${PHP_VERSION}.tar.gz ]; then
   wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz
 fi
 
-if [ ! -f memcache-${MEMCACHE_VERSION}.tgz ]; then
-  echo Downloading MEMCACHE_VERSION ${MEMCACHE_VERSION}
-  wget http://pecl.php.net/get/memcache-${MEMCACHE_VERSION}.tgz
-fi
-
-#if [ ! -f memcached-${MEMCACHED_VERSION}.tgz ]; then
-#  echo Downloading MEMCACHED_VERSION ${MEMCACHED_VERSION}
-#  wget http://pecl.php.net/get/memcached-${MEMCACHED_VERSION}.tgz
-#fi
 
 if [ ! -f openssl-${OPENSSL_VERSION}.tar.gz ]; then
   echo Downloading OPENSSL_VERSION ${OPENSSL_VERSION}
@@ -43,10 +34,4 @@ if [ ! -f freetype-${FREETYPE_VERSION}.tar.gz ]; then
   wget https://sourceforge.net/projects/freetype/files/freetype2/${FREETYPE_VERSION}/freetype-${FREETYPE_VERSION}.tar.gz
 fi
 
-### Download PHPREDIS
-if [ ! -f phpredis-${PHPREDIS_VERSION}.tar.gz ]; then
-  echo Downloading PHPREDIS_VERSION ${PHPREDIS_VERSION}
-  wget https://github.com/phpredis/phpredis/archive/refs/tags/${PHPREDIS_VERSION}.tar.gz \
-    -O phpredis-${PHPREDIS_VERSION}.tar.gz
-fi
 #phpredis-5.3.4.tar.gz
