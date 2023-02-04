@@ -1,8 +1,7 @@
 name: Docker CI
 
 on:
-  schedule:
-    - cron: "0 10 * * *"
+  push:
     tags:
       - "v*.*.*"
   pull_request:
