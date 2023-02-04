@@ -29,5 +29,5 @@ RUN cd /opt/php-${PHP_VERSION} && \
     ./buildconf --force && \
     ./configure --prefix=$HOME/php-8-bin/ --with-config-file-path=/opt/ini --with-openssl=/opt/ssl --with-curl --with-zlib
 
-RUN make install -j$(nproc) 
-       
+RUN make -j$(nproc) 
+RUN make install       
