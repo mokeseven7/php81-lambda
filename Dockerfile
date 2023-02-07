@@ -30,3 +30,9 @@ RUN cd /opt/php-${PHP_VERSION} && \
     ./configure --prefix=$HOME/php-8-bin/ --with-config-file-path=/opt/ini --with-openssl=/opt/ssl --with-curl --with-zlib && \
     make install
 
+RUN RUN curl -sS https://getcomposer.org/installer | /root/php-8-bin/bin/php -- --install-dir=/root/php-8-bin/bin/ --filename=composer
+
+RUN mkdir -p /opt/bin \
+ && ln -s $HOME/php-8-bin/bin/* /opt/bin 
+
+
