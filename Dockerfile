@@ -1,38 +1,32 @@
-#Lambda base image Amazon linux
-FROM public.ecr.aws/lambda/provided:latest as builder
+FROM amazon/aws-lambda-provided:al2
+
+RUN yum -y update; \
+    yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
+    yum -y install https://rpms.remirepo.net/enterprise/remi-release-7.rpm; \
+    yum -y install yum-utils; \
+    yum -y install git; \
+    yum-config-manager --disable 'remi-php*'; \
+    yum-config-manager --enable remi-php80; \
+    yum -y install php php-mbstring php-xml php-fpm \
+    yum -y install nginx \
+    yum -y autoremove;
+
+COPY conf/nginx.conf /etc/nginx/
+RUN mkdir /tmp/nginx
+COPY conf/php-fpm.conf /etc/
+
+WORKDIR /var/runtime/
+COPY runtime/ .
+RUN chmod -R 755 bootstrap
+RUN curl -sS https://getcomposer.org/installer | php
+RUN php composer.phar install
+
+COPY bootstrap/ .
+RUN chmod -R 755 start.sh
 
 
-COPY installation/update_os.sh /opt/installation/update_os.sh
+ENTRYPOINT ["/var/runtime/start.sh"]
 
-RUN yum update -y && \
-    yum install -y git gzip jq tar unzip vim wget zip
-
-RUN /opt/installation/update_os.sh
-
-
-ENV OPENSSL_VERSION 3.0.3
-ENV BISON_VERSION 3.8.2
-ENV CMAKE_VERSION 3.22.5
-ENV LIBZIP_VERSION 1.8.0
-ENV FREETYPE_VERSION 2.10.4
-ENV PHP_VERSION 8.1.11
-
-COPY opt/ /opt
-RUN cd /opt/downloads && ./download_packages.sh
-RUN cd /opt/downloads && ./install_packages.sh
-RUN /opt/build/install_openssl.sh
-RUN /opt/build/install_tools.sh
-
-RUN yum install -y sqlite-devel
-
-RUN cd /opt/php-${PHP_VERSION} && \
-    ./buildconf --force && \
-    ./configure --prefix=$HOME/php-8-bin/ --with-config-file-path=/opt/ini --with-openssl=/opt/ssl --with-curl --with-zlib && \
-    make install
-
-RUN RUN curl -sS https://getcomposer.org/installer | /root/php-8-bin/bin/php -- --install-dir=/root/php-8-bin/bin/ --filename=composer
-
-RUN mkdir -p /opt/bin \
- && ln -s $HOME/php-8-bin/bin/* /usr/local/bin/
+CMD [ "index.php"]
 
 
